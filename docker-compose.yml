@@ -73,3 +73,14 @@ services:
       io.balena.features.supervisor-api: 1
     environment:
       SET_HOSTNAME: balena
+      
+  dbus:
+    build: ./dbus
+    environment:
+      - 'DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket'
+    labels:
+      io.balena.features.dbus: "1"
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "sleep 1d && dbus-send --system --print-reply --dest=org.freedesktop.systemd1 /org/freedesktop/systemd1 org.freedesktop.systemd1.Manager.Reboot"
